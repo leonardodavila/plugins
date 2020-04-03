@@ -74,7 +74,7 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
         }
       case "takePicture":
         {
-          camera.takePicture(call.argument("path"), result);
+          camera.takePicture(call.argument("path"), (Integer) call.argument("enableFlash"), result);
           break;
         }
       case "prepareForVideoRecording":

@@ -3,6 +3,8 @@ package io.flutter.plugins.camera;
 import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 import static io.flutter.plugins.camera.CameraUtils.computeBestPreviewSize;
 
+import android.util.Log;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -223,8 +225,11 @@ public class Camera {
     return flutterTexture;
   }
 
-  public void takePicture(String filePath, @NonNull final Result result) {
+  public void takePicture(String filePath, Integer enableFlash, @NonNull final Result result) {
     final File file = new File(filePath);
+
+
+    Log.d("ENABLE FLASH", enableFlash.toString());
 
     if (file.exists()) {
       result.error(
@@ -250,6 +255,12 @@ public class Camera {
       captureBuilder.addTarget(pictureImageReader.getSurface());
       captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getMediaOrientation());
 
+      if (enableFlash == 1) {
+        captureBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_SINGLE);
+        captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
+        Log.d("FLASH MODE SETADO", "SETOU");
+      }
+      
       cameraCaptureSession.capture(
           captureBuilder.build(),
           new CameraCaptureSession.CaptureCallback() {
